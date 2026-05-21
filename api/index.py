@@ -3,137 +3,276 @@ from fastapi.responses import HTMLResponse
 import sys
 import os
 
-# Extend path to import our price-search module
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
+
 from gundam_prices import search_prices
 
 app = FastAPI()
 
 
 @app.get("/", response_class=HTMLResponse)
-def home() -> str:
-    """Render a simple web UI for the Gundam price checker."""
+def home():
+
     return """
+    <!DOCTYPE html>
+
     <html>
+
     <head>
-        <title>Gundam Card Price Checker</title>
-        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+
+        <title>Gundam Card Prices</title>
+
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
         <style>
-            body {
-                font-family: 'Inter', sans-serif;
-                background: #f5f7fa;
-                padding: 30px;
-                color: #333;
+
+            body{
+                font-family: Arial;
+                background:#f5f5f5;
+                padding:20px;
             }
-            .container {
-                max-width: 800px;
-                margin: 0 auto;
+
+            .container{
+                max-width:1100px;
+                margin:auto;
+                background:white;
+                padding:25px;
+                border-radius:10px;
+                box-shadow:0 0 10px rgba(0,0,0,0.1);
             }
-            h2 {
-                margin-bottom: 20px;
+
+            h1{
+                margin-bottom:20px;
             }
-            form {
-                background: white;
-                padding: 20px;
-                border-radius: 10px;
-                box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-                width: 100%;
+
+            .search-row{
+                display:flex;
+                gap:10px;
+                flex-wrap:wrap;
             }
-            label {
-                font-weight: 600;
-                font-size: 14px;
-                display: block;
-                margin-bottom: 8px;
+
+            input{
+                flex:1;
+                min-width:250px;
+                padding:12px;
+                font-size:16px;
+                border:1px solid #ccc;
+                border-radius:6px;
             }
-            input[type="text"] {
-                width: 100%;
-                padding: 8px;
-                border: 1px solid #ccc;
-                border-radius: 6px;
-                font-family: 'Inter', sans-serif;
+
+            button{
+                padding:12px 18px;
+                font-size:16px;
+                cursor:pointer;
+                background:#2563eb;
+                color:white;
+                border:none;
+                border-radius:6px;
+                font-weight:bold;
             }
-            button {
-                background: #2563eb;
-                color: white;
-                border: none;
-                padding: 10px 15px;
-                border-radius: 6px;
-                cursor: pointer;
-                font-weight: 600;
-                margin-top: 10px;
+
+            button:hover{
+                background:#1d4ed8;
             }
-            button:hover {
-                background: #1d4ed8;
+
+            table{
+                width:100%;
+                border-collapse:collapse;
+                margin-top:20px;
+                display:block;
+                overflow-x:auto;
             }
-            #output {
-                margin-top: 25px;
-                width: 100%;
+
+            th, td{
+                border:1px solid #ddd;
+                padding:10px;
+                text-align:left;
+                white-space:nowrap;
             }
-            table {
-                width: 100%;
-                border-collapse: collapse;
+
+            th{
+                background:#f3f4f6;
             }
-            th, td {
-                padding: 8px 12px;
-                border-bottom: 1px solid #ddd;
-                text-align: left;
+
+            .loading{
+                margin-top:20px;
+                font-weight:bold;
+                color:#2563eb;
             }
-            th {
-                background-color: #f3f4f6;
-                font-weight: 600;
+
+            .store-401G{
+                color:#2563eb;
+                font-weight:bold;
             }
-            .error {
-                color: #b91c1c;
+
+            .store-BANG{
+                color:#16a34a;
+                font-weight:bold;
             }
+
+            .store-HOBB{
+                color:#ea580c;
+                font-weight:bold;
+            }
+
+            .store-TCGP{
+                color:#9333ea;
+                font-weight:bold;
+            }
+
+            .price{
+                font-weight:bold;
+            }
+
         </style>
+
     </head>
+
     <body>
+
         <div class="container">
-            <h2>🃏 Gundam Card Price Checker</h2>
-            <form onsubmit="search(event)">
-                <label for="code">Enter Card Code (e.g. GD04-041):</label>
-                <input type="text" id="code" placeholder="GD04-041" required>
-                <button type="submit">Search</button>
-            </form>
-            <div id="output"></div>
+
+            <h1>🃏 Gundam Card Price Checker</h1>
+
+            <div class="search-row">
+
+                <input
+                    id="code"
+                    placeholder="Enter Gundam Card Code (e.g. GD04-041)"
+                />
+
+                <button onclick="searchCard()">
+                    Search
+                </button>
+
+            </div>
+
+            <div id="results"></div>
+
         </div>
+
         <script>
-        async function search(e) {
-            e.preventDefault();
-            const output = document.getElementById('output');
-            const code = document.getElementById('code').value.trim();
-            if (!code) {
-                output.innerHTML = '<p class="error">Please enter a card code.</p>';
-                return;
-            }
-            output.innerHTML = '<p>Loading...</p>';
-            try {
-                const res = await fetch('/data?code=' + encodeURIComponent(code));
-                const data = await res.json();
-                const results = data.results || [];
-                if (results.length === 0) {
-                    output.innerHTML = '<p>No matching products found.</p>';
+
+            document
+                .getElementById("code")
+                .addEventListener("keypress", function(e){
+
+                    if(e.key === "Enter"){
+                        searchCard();
+                    }
+
+                });
+
+            async function searchCard(){
+
+                const code = document
+                    .getElementById("code")
+                    .value
+                    .trim();
+
+                const resultsDiv =
+                    document.getElementById("results");
+
+                if(!code){
+
+                    resultsDiv.innerHTML =
+                        "Please enter a card code.";
+
                     return;
                 }
-                let html = '<table><thead><tr><th>Store</th><th>Title</th><th>Price (CAD)</th><th>Qty</th></tr></thead><tbody>';
-                results.forEach(r => {
-                    html += `<tr><td>${r.store}</td><td>${r.title}</td><td>${r.price.toFixed(2)}</td><td>${r.quantity ?? '-'}</td></tr>`;
-                });
-                html += '</tbody></table>';
-                output.innerHTML = html;
-            } catch (err) {
-                output.innerHTML = '<p class="error">Error fetching data.</p>';
+
+                resultsDiv.innerHTML = `
+                    <div class="loading">
+                        Searching prices...
+                    </div>
+                `;
+
+                try{
+
+                    const response =
+                        await fetch(`/data?code=${code}`);
+
+                    const data =
+                        await response.json();
+
+                    if(!data.results ||
+                        data.results.length === 0){
+
+                        resultsDiv.innerHTML =
+                            "No results found.";
+
+                        return;
+                    }
+
+                    data.results.sort(
+                        (a,b) => a.price - b.price
+                    );
+
+                    let html = `
+                        <table>
+
+                            <tr>
+                                <th>Store</th>
+                                <th>Title</th>
+                                <th>Price (CAD)</th>
+                                <th>Qty</th>
+                            </tr>
+                    `;
+
+                    data.results.forEach(item => {
+
+                        html += `
+
+                            <tr>
+
+                                <td class="store-${item.store}">
+                                    ${item.store}
+                                </td>
+
+                                <td>
+                                    ${item.title}
+                                </td>
+
+                                <td class="price">
+                                    $${Number(item.price).toFixed(2)}
+                                </td>
+
+                                <td>
+                                    ${item.quantity ?? "-"}
+                                </td>
+
+                            </tr>
+
+                        `;
+
+                    });
+
+                    html += "</table>";
+
+                    resultsDiv.innerHTML = html;
+
+                }catch(err){
+
+                    console.log(err);
+
+                    resultsDiv.innerHTML =
+                        "Error loading data.";
+
+                }
+
             }
-        }
+
         </script>
+
     </body>
+
     </html>
     """
 
 
 @app.get("/data")
 def data(code: str):
-    """API endpoint to return price data for a given card code."""
-    results = search_prices(code)
-    # For JSON responses, float values are fine; JS will format them
-    return {"results": results}
+
+    return {
+        "results": search_prices(code)
+    }
