@@ -132,11 +132,26 @@ def home():
             }
 
             .card{
+                display:flex;
+                gap:12px;
                 background:white;
                 border-radius:12px;
                 padding:14px;
                 border:1px solid #ddd;
                 box-shadow:0 2px 6px rgba(0,0,0,0.08);
+
+                cursor:pointer;
+
+                transition:0.2s;
+            }
+
+            .card:hover{
+                transform:scale(1.01);
+                box-shadow:0 4px 12px rgba(0,0,0,0.12);
+            }
+
+            .card-image{
+                pointer-events:none;
             }
 
             .top-row{
@@ -417,14 +432,41 @@ def home():
             }
 
             function addToCartByIndex(index){
-                if(!window.currentResults || !Array.isArray(window.currentResults)) return;
+
+                if(!window.currentResults) return;
+
                 const item = window.currentResults[index];
+
                 if(!item) return;
-                const cart = getCart();
-                cart.push(item);
-                saveCart(cart);
+
+                const cart =
+                    JSON.parse(localStorage.getItem("cart") || "[]");
+
+                cart.push({
+
+                    store: item.store,
+
+                    title: item.title,
+
+                    image: item.image,
+
+                    quantity: item.quantity,
+
+                    price: Number(item.price),
+
+                    cart_qty: 1
+
+                });
+
+                localStorage.setItem(
+                    "cart",
+                    JSON.stringify(cart)
+                );
+
                 updateCartCount();
-                alert('Added to cart');
+
+                window.location.href = "/cart";
+
             }
 
             // initialize cart count on load
@@ -666,9 +708,9 @@ def cart():
                     // default qty to 1 if not present
                     if(!item.cart_qty){ item.cart_qty = 1; }
                     // price field may be string or number; ensure numeric
-                    let price = parseFloat(item.price);
+                    let price = Number(item.price || 0);
                     if(isNaN(price)){ price = 0; }
-                    const subtotal = price * item.cart_qty;
+                    const subtotal = Number(price) * Number(item.cart_qty);
                     grandTotal += subtotal;
                     html += `<tr>
                         <td>${item.store}</td>
@@ -687,7 +729,7 @@ def cart():
                 const cart = getCart();
                 let price = parseFloat(val);
                 if(isNaN(price) || price < 0){ price = 0; }
-                cart[idx].price = price;
+                cart[idx].price = Number(price);
                 saveCart(cart);
                 renderCart();
             }
@@ -695,7 +737,7 @@ def cart():
                 const cart = getCart();
                 let qty = parseInt(val, 10);
                 if(isNaN(qty) || qty < 1){ qty = 1; }
-                cart[idx].cart_qty = qty;
+                cart[idx].cart_qty =Number(qty);
                 saveCart(cart);
                 renderCart();
             }
