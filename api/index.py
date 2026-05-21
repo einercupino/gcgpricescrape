@@ -186,6 +186,28 @@ def home():
                 color:#9333ea;
             }
 
+            .quick-buttons{
+                display:flex;
+                gap:8px;
+                flex-wrap:wrap;
+                margin-bottom:15px;
+            }
+
+            .quick-btn{
+                background:#e5e7eb;
+                color:#111;
+                border:none;
+                padding:8px 12px;
+                border-radius:8px;
+                cursor:pointer;
+                font-size:13px;
+                font-weight:bold;
+            }
+
+            .quick-btn:hover{
+                background:#d1d5db;
+            }
+
         </style>
 
     </head>
@@ -260,6 +282,8 @@ def home():
                     placeholder="Search Gundam Card"
                 />
 
+                
+
                 <button onclick="searchCard()">
                     Search
                 </button>
@@ -282,6 +306,17 @@ def home():
 
                 });
 
+            function setPrefix(prefix){
+
+                const input =
+                    document.getElementById("code");
+
+                input.value = prefix;
+
+                input.focus();
+
+            }        
+        
             async function searchCard(){
 
                 const code = document
