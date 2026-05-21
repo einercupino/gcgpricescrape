@@ -428,12 +428,42 @@ def home():
                 });
                 saveCart(cart);
                 updateCartCount();
-                // Navigate to cart page upon adding
-                window.location.href = "/cart";
+                showAddedToast();
             }
 
             // Initialize cart count on page load
             updateCartCount();
+
+            function showAddedToast(){
+
+                const toast =
+                    document.createElement("div");
+
+                toast.innerText = "Added to cart";
+
+                toast.style.position = "fixed";
+                toast.style.bottom = "20px";
+                toast.style.left = "50%";
+                toast.style.transform = "translateX(-50%)";
+
+                toast.style.background = "#111";
+                toast.style.color = "white";
+
+                toast.style.padding = "10px 16px";
+
+                toast.style.borderRadius = "8px";
+
+                toast.style.zIndex = "9999";
+
+                toast.style.fontSize = "14px";
+
+                document.body.appendChild(toast);
+
+                setTimeout(() => {
+                    toast.remove();
+                }, 1200);
+
+            }
 
             async function searchCard(){
 
@@ -689,7 +719,7 @@ def cart():
                     totalDiv.textContent = '';
                     return;
                 }
-                let html = '<table><tr><th>Store</th><th>Title</th><th>Price (CAD)</th><th>Qty</th><th>Subtotal</th><th></th></tr>';
+                let html = '<table><tr><th>Title</th><th>Price (CAD)</th><th>Qty</th><th>Subtotal</th><th></th></tr>';
                 let grandTotal = 0;
                 cart.forEach((item, idx) => {
                     // default qty to 1 if not present
@@ -700,7 +730,6 @@ def cart():
                     const subtotal = Number(price) * Number(item.cart_qty);
                     grandTotal += subtotal;
                     html += `<tr>
-                        <td>${item.store}</td>
                         <td>${item.title}</td>
                         <td><input type="number" step="0.01" min="0" value="${price.toFixed(2)}" onchange="updatePrice(${idx}, this.value)"></td>
                         <td><input type="number" min="1" value="${item.cart_qty}" onchange="updateQty(${idx}, this.value)"></td>
