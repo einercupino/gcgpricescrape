@@ -194,7 +194,64 @@ def home():
 
         <div class="container">
 
-            <h1>Gundam Card Game Price Check</h1>
+            <div class="quick-buttons">
+
+                <button class="quick-btn"
+                    onclick="setPrefix('GD01-')">
+                    GD01
+                </button>
+
+                <button class="quick-btn"
+                    onclick="setPrefix('GD02-')">
+                    GD02
+                </button>
+
+                <button class="quick-btn"
+                    onclick="setPrefix('GD03-')">
+                    GD03
+                </button>
+
+                <button class="quick-btn"
+                    onclick="setPrefix('GD04-')">
+                    GD04
+                </button>
+
+                <button class="quick-btn"
+                    onclick="setPrefix('GD05-')">
+                    GD05
+                </button>
+
+                <button class="quick-btn"
+                    onclick="setPrefix('ST01-')">
+                    ST01
+                </button>
+
+                <button class="quick-btn"
+                    onclick="setPrefix('ST02-')">
+                    ST02
+                </button>
+
+                <button class="quick-btn"
+                    onclick="setPrefix('ST03-')">
+                    ST03
+                </button>
+
+                <button class="quick-btn"
+                    onclick="setPrefix('ST04-')">
+                    ST04
+                </button>
+
+                <button class="quick-btn"
+                    onclick="setPrefix('ST05-')">
+                    ST05
+                </button>
+
+                <button class="quick-btn"
+                    onclick="setPrefix('ST06-')">
+                    ST06
+                </button>
+
+            </div>
 
             <div class="search-row">
 
