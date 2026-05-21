@@ -27,17 +27,30 @@ def home():
         <style>
 
             body{
-                font-family: Arial;
+
+                font-family:Arial;
+
                 background:#f5f5f5;
-                padding:20px;
+
+                padding:8px;
+
+                margin:0;
             }
 
             .container{
-                max-width:1100px;
+
+                width:100%;
+
+                max-width:1600px;
+
                 margin:auto;
+
                 background:white;
-                padding:25px;
+
+                padding:16px;
+
                 border-radius:10px;
+
                 box-shadow:0 0 10px rgba(0,0,0,0.1);
             }
 
@@ -576,18 +589,31 @@ def cart():
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <style>
             body{
-                font-family: Arial;
+
+                font-family:Arial;
+
                 background:#f5f5f5;
-                padding:20px;
+
+                padding:8px;
+
+                margin:0;
             }
-            .container{
-                max-width:1100px;
-                margin:auto;
-                background:white;
-                padding:25px;
-                border-radius:10px;
-                box-shadow:0 0 10px rgba(0,0,0,0.1);
-            }
+.container{
+
+    width:100%;
+
+    max-width:1600px;
+
+    margin:auto;
+
+    background:white;
+
+    padding:16px;
+
+    border-radius:10px;
+
+    box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
             h1{
                 margin-bottom:20px;
             }
@@ -599,24 +625,28 @@ def cart():
                 gap:14px;
                 margin-top:20px;
             }
-            .cart-card{
+.cart-card{
 
-                display:flex;
+    display:flex;
 
-                gap:10px;
+    gap:12px;
 
-                background:white;
+    background:white;
 
-                border-radius:12px;
+    border-radius:14px;
 
-                padding:12px;
+    padding:10px 12px;
 
-                border:1px solid #ddd;
+    border:1px solid #ddd;
 
-                box-shadow:0 2px 6px rgba(0,0,0,0.08);
+    box-shadow:0 2px 6px rgba(0,0,0,0.08);
 
-                align-items:flex-start;
-            }
+    align-items:center;
+
+    width:100%;
+
+    box-sizing:border-box;
+}
 
             .cart-image{
 
@@ -631,8 +661,12 @@ def cart():
             }
 
             .cart-content{
+
                 flex:1;
+
                 min-width:0;
+
+                width:100%;
             }
 
             .cart-title{
@@ -646,7 +680,10 @@ def cart():
             .cart-controls{
                 /* Use a grid layout so price, quantity and subtotal align horizontally on the same plane.  Each group gets equal space. */
                 display:grid;
-                grid-template-columns: repeat(3, 1fr);
+                grid-template-columns:
+                    1fr
+                    1fr
+                    auto;
                 gap:10px;
                 margin-bottom:10px;
                 align-items:center;
