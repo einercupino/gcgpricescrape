@@ -33,7 +33,7 @@ def home():
             }
 
             .container{
-                max-width:1400px;
+                max-width:1100px;
                 margin:auto;
                 background:white;
                 padding:25px;
@@ -581,7 +581,7 @@ def cart():
                 padding:20px;
             }
             .container{
-                max-width:1400px;
+                max-width:1100px;
                 margin:auto;
                 background:white;
                 padding:25px;
@@ -603,25 +603,25 @@ def cart():
 
                 display:flex;
 
-                gap:12px;
+                gap:10px;
 
                 background:white;
 
                 border-radius:12px;
 
-                padding:10px 12px;
+                padding:12px;
 
                 border:1px solid #ddd;
 
                 box-shadow:0 2px 6px rgba(0,0,0,0.08);
 
-                align-items:center;
+                align-items:flex-start;
             }
 
             .cart-image{
 
-                width:60px;
-                height:84px;
+                width:70px;
+                height:95px;
 
                 object-fit:cover;
 
@@ -636,35 +636,33 @@ def cart():
             }
 
             .cart-title{
-
-                font-size:12px;
-
-                line-height:1.3;
-
-                margin-bottom:6px;
-
+                /* smaller font size for card names to save space */
+                font-size:13px;
+                line-height:1.4;
+                margin-bottom:8px;
                 word-break:break-word;
             }
 
-.cart-controls{
-
-    display:flex;
-
-    align-items:center;
-
-    gap:14px;
-
-    flex-wrap:wrap;
-}
+            .cart-controls{
+                /* Use a grid layout so price, quantity and subtotal align horizontally on the same plane.  Each group gets equal space. */
+                display:grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap:10px;
+                margin-bottom:10px;
+                align-items:center;
+            }
 
             .control-group{
                 display:flex;
                 flex-direction:column;
+                justify-content:flex-start;
+                /* Allow groups to stretch to fill available grid columns */
+                width:100%;
             }
 
             .control-group label{
 
-                font-size:10px;
+                font-size:11px;
 
                 color:#666;
 
@@ -672,7 +670,8 @@ def cart():
             }
 
             .control-group input{
-                width:70px;
+                /* Full width input to align with other groups */
+                width:100%;
                 padding:6px;
                 border:1px solid #ccc;
                 border-radius:6px;
@@ -683,7 +682,9 @@ def cart():
             .qty-controls{
                 display:flex;
                 align-items:center;
+                justify-content:center;
                 gap:6px;
+                width:100%;
             }
             .qty-btn{
                 width:26px;
@@ -702,7 +703,7 @@ def cart():
                 color:white;
             }
             .qty-btn.plus{
-                background:#008000;
+                background:#2563eb;
                 color:white;
             }
             .qty-btn.minus:hover{
@@ -717,13 +718,14 @@ def cart():
                 font-size:14px;
             }
 
-            .cart-subtotal{
-
-                font-size:13px;
-
+            /* Subtotal group styled similarly to other control groups */
+            .subtotal-value{
+                display:flex;
+                align-items:center;
+                font-size:14px;
                 font-weight:bold;
-
-                white-space:nowrap;
+                /* Ensure consistent height with input fields */
+                min-height:34px;
             }
 
             .remove-btn{
@@ -783,30 +785,12 @@ def cart():
                 background:#2563eb;
                 color:white;
             }
-
-            .subtotal-value{
-
-                min-width:80px;
-
-                height:36px;
-
-                display:flex;
-
-                align-items:center;
-
-                font-size:15px;
-
-                font-weight:bold;
-            }
-
-            .control-group{
-                justify-content:flex-start;
-            }
         </style>
     </head>
 
     <body>
         <div class="container">
+            <h1>Shopping Cart</h1>
             <div id="cart-items" class="cart-cards"></div>
             <div class="total" id="grand-total"></div>
             <div class="actions">
@@ -902,21 +886,17 @@ def cart():
                     html += `
                         <div class="cart-card">
                             <img
-                                src="${item.image || 'https://via.placeholder.com/80x110?text=No+Image'}"
+                                src="${item.image || 'https://via.placeholder.com/60x84?text=No+Image'}"
                                 class="cart-image"
                             />
                             <div class="cart-content">
                                 <div class="cart-title">
                                     ${item.title}
                                 </div>
+                                <!-- Updated controls layout: price, quantity and subtotal aligned horizontally -->
                                 <div class="cart-controls">
-
                                     <div class="control-group">
-
-                                        <label>
-                                            Price
-                                        </label>
-
+                                        <label>Price</label>
                                         <input
                                             type="number"
                                             step="0.01"
@@ -924,53 +904,21 @@ def cart():
                                             value="${price.toFixed(2)}"
                                             onchange="updatePrice(${idx}, this.value)"
                                         />
-
                                     </div>
-
                                     <div class="control-group">
-
-                                        <label>
-                                            Qty
-                                        </label>
-
+                                        <label>Qty</label>
                                         <div class="qty-controls">
-
-                                            <button
-                                                class="qty-btn minus"
-                                                onclick="decreaseQty(${idx})"
-                                            >
-                                                -
-                                            </button>
-
-                                            <span class="qty-value">
-                                                ${item.cart_qty}
-                                            </span>
-
-                                            <button
-                                                class="qty-btn plus"
-                                                onclick="increaseQty(${idx})"
-                                            >
-                                                +
-                                            </button>
-
+                                            <button class="qty-btn minus" onclick="decreaseQty(${idx})">-</button>
+                                            <span class="qty-value">${item.cart_qty}</span>
+                                            <button class="qty-btn plus" onclick="increaseQty(${idx})">+</button>
                                         </div>
-
                                     </div>
-
                                     <div class="control-group">
-
-                                        <label>
-                                            Subtotal
-                                        </label>
-
+                                        <label>Subtotal</label>
                                         <div class="subtotal-value">
-
                                             $${subtotal.toFixed(2)}
-
                                         </div>
-
                                     </div>
-
                                 </div>
                             </div>
                         </div>
