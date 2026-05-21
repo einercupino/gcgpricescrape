@@ -124,6 +124,68 @@ def home():
                 font-weight:bold;
             }
 
+            .cards{
+                display:flex;
+                flex-direction:column;
+                gap:12px;
+                margin-top:20px;
+            }
+
+            .card{
+                background:white;
+                border-radius:12px;
+                padding:14px;
+                border:1px solid #ddd;
+                box-shadow:0 2px 6px rgba(0,0,0,0.08);
+            }
+
+            .top-row{
+                display:flex;
+                justify-content:space-between;
+                align-items:center;
+                margin-bottom:8px;
+            }
+
+            .title{
+                font-size:14px;
+                line-height:1.4;
+                margin-bottom:8px;
+
+                word-wrap:break-word;
+                overflow-wrap:break-word;
+            }
+
+            .price{
+                font-size:18px;
+                font-weight:bold;
+            }
+
+            .qty{
+                color:#666;
+                font-size:13px;
+            }
+
+            .store{
+                font-weight:bold;
+                font-size:14px;
+            }
+
+            .store-401G{
+                color:#2563eb;
+            }
+
+            .store-BANG{
+                color:#16a34a;
+            }
+
+            .store-HOBB{
+                color:#ea580c;
+            }
+
+            .store-TCGP{
+                color:#9333ea;
+            }
+
         </style>
 
     </head>
@@ -208,46 +270,41 @@ def home():
                         (a,b) => a.price - b.price
                     );
 
-                    let html = `
-                        <table>
-
-                            <tr>
-                                <th>Store</th>
-                                <th>Title</th>
-                                <th>Price (CAD)</th>
-                                <th>Qty</th>
-                            </tr>
-                    `;
+                    let html = `<div class="cards">`;
 
                     data.results.forEach(item => {
 
                         html += `
 
-                            <tr>
+                            <div class="card">
 
-                                <td class="store-${item.store}">
-                                    ${item.store}
-                                </td>
+                                <div class="top-row">
 
-                                <td>
+                                    <div class="store store-${item.store}">
+                                        ${item.store}
+                                    </div>
+
+                                    <div class="price">
+                                        $${Number(item.price).toFixed(2)}
+                                    </div>
+
+                                </div>
+
+                                <div class="title">
                                     ${item.title}
-                                </td>
+                                </div>
 
-                                <td class="price">
-                                    $${Number(item.price).toFixed(2)}
-                                </td>
+                                <div class="qty">
+                                    Qty: ${item.quantity ?? "-"}
+                                </div>
 
-                                <td>
-                                    ${item.quantity ?? "-"}
-                                </td>
-
-                            </tr>
+                            </div>
 
                         `;
 
                     });
 
-                    html += "</table>";
+                    html += "</div>";
 
                     resultsDiv.innerHTML = html;
 
