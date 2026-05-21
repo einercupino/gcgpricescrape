@@ -274,6 +274,21 @@ def home():
                 </button>
 
                 <button class="quick-btn"
+                    onclick="setPrefix('ST07-')">
+                    ST07
+                </button>
+
+                <button class="quick-btn"
+                    onclick="setPrefix('ST08-')">
+                    ST08
+                </button>
+
+                <button class="quick-btn"
+                    onclick="setPrefix('ST09-')">
+                    ST09
+                </button>
+
+                <button class="quick-btn"
                     onclick="setPrefix('EB01-')">
                     EB01
                 </button>
