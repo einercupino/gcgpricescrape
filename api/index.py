@@ -220,6 +220,115 @@ def home():
                 border-radius:8px;
             }
 
+            .cart-card{
+
+                display:flex;
+
+                gap:10px;
+
+                background:white;
+
+                border-radius:12px;
+
+                padding:12px;
+
+                border:1px solid #ddd;
+
+                box-shadow:0 2px 6px rgba(0,0,0,0.08);
+
+                align-items:flex-start;
+            }
+
+            .cart-image{
+
+                width:70px;
+                height:95px;
+
+                object-fit:cover;
+
+                border-radius:8px;
+
+                flex-shrink:0;
+            }
+
+            .cart-content{
+                flex:1;
+                min-width:0;
+            }
+
+            .cart-title{
+
+                font-size:14px;
+
+                line-height:1.4;
+
+                margin-bottom:10px;
+
+                word-break:break-word;
+            }
+
+            .cart-controls{
+
+                display:flex;
+
+                gap:10px;
+
+                margin-bottom:10px;
+            }
+
+            .control-group{
+                display:flex;
+                flex-direction:column;
+            }
+
+            .control-group label{
+
+                font-size:11px;
+
+                color:#666;
+
+                margin-bottom:4px;
+            }
+
+            .control-group input{
+
+                width:80px;
+
+                padding:6px;
+
+                border:1px solid #ccc;
+
+                border-radius:6px;
+
+                font-size:14px;
+            }
+
+            .cart-subtotal{
+
+                font-size:14px;
+
+                font-weight:bold;
+
+                margin-bottom:10px;
+            }
+
+            .remove-btn{
+
+                background:#ef4444;
+
+                color:white;
+
+                border:none;
+
+                padding:7px 12px;
+
+                border-radius:6px;
+
+                cursor:pointer;
+
+                font-size:13px;
+            }
+
         </style>
 
     </head>
@@ -793,32 +902,77 @@ def cart():
                     let price = Number(item.price || 0);
                     const subtotal = Number(price) * Number(item.cart_qty);
                     grandTotal += subtotal;
+                    
                     html += `
+
                         <div class="cart-card">
-                            <img src="${item.image || 'https://via.placeholder.com/80x110?text=No+Image'}" class="cart-image" />
+
+                            <img
+                                src="${item.image || 'https://via.placeholder.com/80x110?text=No+Image'}"
+                                class="cart-image"
+                            />
+
                             <div class="cart-content">
-                                <div class="cart-top">
-                                    <div>
-                                        <div class="cart-store store-${item.store}">${item.store}</div>
-                                        <div class="cart-title">${item.title}</div>
-                                    </div>
-                                    <div class="cart-price">$${price.toFixed(2)}</div>
+
+                                <div class="cart-title">
+                                    ${item.title}
                                 </div>
+
                                 <div class="cart-controls">
+
                                     <div class="control-group">
-                                        <label>Price</label>
-                                        <input type="number" step="0.01" min="0" value="${price.toFixed(2)}" onchange="updatePrice(${idx}, this.value)" />
+
+                                        <label>
+                                            Price
+                                        </label>
+
+                                        <input
+                                            type="number"
+                                            step="0.01"
+                                            min="0"
+                                            value="${price.toFixed(2)}"
+                                            onchange="updatePrice(${idx}, this.value)"
+                                        />
+
                                     </div>
+
                                     <div class="control-group">
-                                        <label>Qty</label>
-                                        <input type="number" min="1" value="${item.cart_qty}" onchange="updateQty(${idx}, this.value)" />
+
+                                        <label>
+                                            Qty
+                                        </label>
+
+                                        <input
+                                            type="number"
+                                            min="1"
+                                            value="${item.cart_qty}"
+                                            onchange="updateQty(${idx}, this.value)"
+                                        />
+
                                     </div>
+
                                 </div>
-                                <div class="cart-subtotal">Subtotal: $${subtotal.toFixed(2)}</div>
-                                <button class="remove-btn" onclick="removeItem(${idx})">Remove</button>
+
+                                <div class="cart-subtotal">
+
+                                    Subtotal:
+                                    $${subtotal.toFixed(2)}
+
+                                </div>
+
+                                <button
+                                    class="remove-btn"
+                                    onclick="removeItem(${idx})"
+                                >
+                                    Remove
+                                </button>
+
                             </div>
+
                         </div>
+
                     `;
+
                 });
                 itemsDiv.innerHTML = html;
                 totalDiv.textContent = 'Grand Total: $' + grandTotal.toFixed(2);
