@@ -220,115 +220,6 @@ def home():
                 border-radius:8px;
             }
 
-            .cart-card{
-
-                display:flex;
-
-                gap:10px;
-
-                background:white;
-
-                border-radius:12px;
-
-                padding:12px;
-
-                border:1px solid #ddd;
-
-                box-shadow:0 2px 6px rgba(0,0,0,0.08);
-
-                align-items:flex-start;
-            }
-
-            .cart-image{
-
-                width:70px;
-                height:95px;
-
-                object-fit:cover;
-
-                border-radius:8px;
-
-                flex-shrink:0;
-            }
-
-            .cart-content{
-                flex:1;
-                min-width:0;
-            }
-
-            .cart-title{
-
-                font-size:14px;
-
-                line-height:1.4;
-
-                margin-bottom:10px;
-
-                word-break:break-word;
-            }
-
-            .cart-controls{
-
-                display:flex;
-
-                gap:10px;
-
-                margin-bottom:10px;
-            }
-
-            .control-group{
-                display:flex;
-                flex-direction:column;
-            }
-
-            .control-group label{
-
-                font-size:11px;
-
-                color:#666;
-
-                margin-bottom:4px;
-            }
-
-            .control-group input{
-
-                width:80px;
-
-                padding:6px;
-
-                border:1px solid #ccc;
-
-                border-radius:6px;
-
-                font-size:14px;
-            }
-
-            .cart-subtotal{
-
-                font-size:14px;
-
-                font-weight:bold;
-
-                margin-bottom:10px;
-            }
-
-            .remove-btn{
-
-                background:#ef4444;
-
-                color:white;
-
-                border:none;
-
-                padding:7px 12px;
-
-                border-radius:6px;
-
-                cursor:pointer;
-
-                font-size:13px;
-            }
-
         </style>
 
     </head>
@@ -417,11 +308,6 @@ def home():
                 </button>
 
                 <button class="quick-btn"
-                    onclick="setPrefix('EB01-')">
-                    EB01
-                </button>
-
-                <button class="quick-btn"
                     onclick="setPrefix('R-')">
                     R
                 </button>
@@ -437,8 +323,8 @@ def home():
                 </button>
 
                 <button class="quick-btn"
-                    onclick="setPrefix('GCG-PR-')">
-                    GCG-PR
+                    onclick="setPrefix('T-')">
+                    T
                 </button>
 
             </div>
@@ -714,81 +600,111 @@ def cart():
                 margin-top:20px;
             }
             .cart-card{
+
                 display:flex;
-                gap:12px;
+
+                gap:10px;
+
                 background:white;
+
                 border-radius:12px;
-                padding:14px;
+
+                padding:12px;
+
                 border:1px solid #ddd;
+
                 box-shadow:0 2px 6px rgba(0,0,0,0.08);
+
                 align-items:flex-start;
             }
+
             .cart-image{
-                width:80px;
-                height:110px;
+
+                width:70px;
+                height:95px;
+
                 object-fit:cover;
+
                 border-radius:8px;
+
                 flex-shrink:0;
             }
+
             .cart-content{
                 flex:1;
                 min-width:0;
             }
-            .cart-top{
-                display:flex;
-                justify-content:space-between;
-                align-items:flex-start;
-                gap:10px;
-            }
-            .cart-store{
-                font-size:14px;
-                font-weight:bold;
-            }
+
             .cart-title{
-                margin-top:6px;
-                font-size:15px;
+
+                font-size:14px;
+
                 line-height:1.4;
+
+                margin-bottom:10px;
+
                 word-break:break-word;
             }
-            .cart-price{
-                font-size:18px;
-                font-weight:bold;
-                white-space:nowrap;
-            }
+
             .cart-controls{
+
                 display:flex;
-                gap:14px;
-                margin-top:14px;
-                flex-wrap:wrap;
+
+                gap:10px;
+
+                margin-bottom:10px;
             }
+
             .control-group{
                 display:flex;
                 flex-direction:column;
             }
+
             .control-group label{
-                font-size:12px;
+
+                font-size:11px;
+
                 color:#666;
+
                 margin-bottom:4px;
             }
+
             .control-group input{
-                width:90px;
-                padding:8px;
+
+                width:80px;
+
+                padding:6px;
+
                 border:1px solid #ccc;
+
                 border-radius:6px;
+
+                font-size:14px;
             }
+
             .cart-subtotal{
-                margin-top:12px;
+
+                font-size:14px;
+
                 font-weight:bold;
-                font-size:15px;
+
+                margin-bottom:10px;
             }
+
             .remove-btn{
-                margin-top:12px;
+
                 background:#ef4444;
+
                 color:white;
+
                 border:none;
-                padding:8px 12px;
+
+                padding:7px 12px;
+
                 border-radius:6px;
+
                 cursor:pointer;
+
                 font-size:13px;
             }
             .remove-btn:hover{
