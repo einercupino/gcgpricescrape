@@ -41,7 +41,7 @@ def home():
 
                 width:100%;
 
-                max-width:1600px;
+                max-width:1500px;
 
                 margin:auto;
 
@@ -598,22 +598,22 @@ def cart():
 
                 margin:0;
             }
-.container{
+            .container{
 
-    width:100%;
+                width:100%;
 
-    max-width:1600px;
+                max-width:1500px;
 
-    margin:auto;
+                margin:auto;
 
-    background:white;
+                background:white;
 
-    padding:16px;
+                padding:16px;
 
-    border-radius:10px;
+                border-radius:10px;
 
-    box-shadow:0 0 10px rgba(0,0,0,0.1);
-}
+                box-shadow:0 0 10px rgba(0,0,0,0.1);
+            }
             h1{
                 margin-bottom:20px;
             }
@@ -681,10 +681,10 @@ def cart():
                 /* Use a grid layout so price, quantity and subtotal align horizontally on the same plane.  Each group gets equal space. */
                 display:grid;
                 grid-template-columns:
-                    1fr
-                    1fr
+                    110px
+                    90px
                     auto;
-                gap:10px;
+                gap:18px;
                 margin-bottom:10px;
                 align-items:center;
             }
@@ -708,7 +708,7 @@ def cart():
 
             .control-group input{
                 /* Full width input to align with other groups */
-                width:100%;
+                width:90px;
                 padding:6px;
                 border:1px solid #ccc;
                 border-radius:6px;
@@ -757,12 +757,20 @@ def cart():
 
             /* Subtotal group styled similarly to other control groups */
             .subtotal-value{
+
                 display:flex;
+
                 align-items:center;
-                font-size:14px;
+
+                justify-content:flex-start;
+
+                font-size:15px;
+
                 font-weight:bold;
-                /* Ensure consistent height with input fields */
-                min-height:34px;
+
+                min-height:38px;
+
+                padding-left:4px;
             }
 
             .remove-btn{
@@ -827,7 +835,6 @@ def cart():
 
     <body>
         <div class="container">
-            <h1>Shopping Cart</h1>
             <div id="cart-items" class="cart-cards"></div>
             <div class="total" id="grand-total"></div>
             <div class="actions">
