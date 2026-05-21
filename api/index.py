@@ -273,6 +273,31 @@ def home():
                     ST06
                 </button>
 
+                <button class="quick-btn"
+                    onclick="setPrefix('EB01-')">
+                    EB01
+                </button>
+
+                <button class="quick-btn"
+                    onclick="setPrefix('R-')">
+                    R
+                </button>
+
+                <button class="quick-btn"
+                    onclick="setPrefix('RP-')">
+                    RP
+                </button>
+
+                <button class="quick-btn"
+                    onclick="setPrefix('EXRP-')">
+                    EXRP
+                </button>
+
+                <button class="quick-btn"
+                    onclick="setPrefix('GCG-PR-')">
+                    GCG-PR
+                </button>
+
             </div>
 
             <div class="search-row">
