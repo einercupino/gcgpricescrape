@@ -389,27 +389,9 @@ def home():
 
                 input.focus();
 
-            }        
-        
-            async function searchCard(){
+            }
 
-                const code = document
-                    .getElementById("code")
-                    .value
-                    .trim();
-
-                const resultsDiv =
-                    document.getElementById("results");
-
-                if(!code){
-
-                    resultsDiv.innerHTML =
-                        "Please enter a card code.";
-
-                    return;
-                }
-
-            // cart state persisted in localStorage
+            // Cart helper functions stored globally
             function getCart(){
                 try{
                     const c = localStorage.getItem('cart');
@@ -432,51 +414,56 @@ def home():
             }
 
             function addToCartByIndex(index){
-
-                if(!window.currentResults) return;
-
+                if(!window.currentResults || !Array.isArray(window.currentResults)) return;
                 const item = window.currentResults[index];
-
                 if(!item) return;
-
-                const cart =
-                    JSON.parse(localStorage.getItem("cart") || "[]");
-
+                const cart = getCart();
                 cart.push({
-
                     store: item.store,
-
                     title: item.title,
-
                     image: item.image,
-
                     quantity: item.quantity,
-
                     price: Number(item.price),
-
-                    cart_qty: 1
-
+                    cart_qty: 1,
                 });
-
-                localStorage.setItem(
-                    "cart",
-                    JSON.stringify(cart)
-                );
-
+                saveCart(cart);
                 updateCartCount();
-
+                // Navigate to cart page upon adding
                 window.location.href = "/cart";
-
             }
 
-            // initialize cart count on load
+            // Initialize cart count on page load
             updateCartCount();
+
+            async function searchCard(){
+
+                const code = document
+                    .getElementById("code")
+                    .value
+                    .trim();
+
+                const resultsDiv =
+                    document.getElementById("results");
+
+                if(!code){
+
+                    resultsDiv.innerHTML =
+                        "Please enter a card code.";
+
+                    return;
+                }
 
                 resultsDiv.innerHTML = `
                     <div class="loading">
                         Searching prices...
                     </div>
                 `;
+            // Start loading spinner
+            resultsDiv.innerHTML = `
+                <div class="loading">
+                    Searching prices...
+                </div>
+            `;
 
                 try{
 
@@ -727,9 +714,9 @@ def cart():
             }
             function updatePrice(idx, val){
                 const cart = getCart();
-                let price = parseFloat(val);
+                let price = Number(val);
                 if(isNaN(price) || price < 0){ price = 0; }
-                cart[idx].price = Number(price);
+                cart[idx].price = price;
                 saveCart(cart);
                 renderCart();
             }
