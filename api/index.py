@@ -243,6 +243,7 @@ def home():
             }
 
             .cart-card{
+
                 display:flex;
                 gap:12px;
 
@@ -255,11 +256,14 @@ def home():
                 border:1px solid #ddd;
 
                 box-shadow:0 2px 6px rgba(0,0,0,0.08);
+
+                align-items:flex-start;
             }
 
             .cart-image{
-                width:90px;
-                height:120px;
+
+                width:80px;
+                height:110px;
 
                 object-fit:cover;
 
@@ -273,47 +277,89 @@ def home():
                 min-width:0;
             }
 
-            .cart-title{
-                font-weight:bold;
+            .cart-top{
+                display:flex;
+                justify-content:space-between;
+                align-items:flex-start;
+                gap:10px;
+            }
+
+            .cart-store{
                 font-size:14px;
+                font-weight:bold;
+            }
+
+            .cart-title{
+
+                margin-top:6px;
+
+                font-size:15px;
 
                 line-height:1.4;
-
-                margin-bottom:6px;
 
                 word-break:break-word;
             }
 
-            .cart-store{
-                font-size:12px;
-                color:#666;
-                margin-bottom:10px;
+            .cart-price{
+
+                font-size:18px;
+
+                font-weight:bold;
+
+                white-space:nowrap;
             }
 
-            .cart-row{
+            .cart-controls{
+
                 display:flex;
-                gap:12px;
-                margin-bottom:12px;
+
+                gap:14px;
+
+                margin-top:14px;
+
+                flex-wrap:wrap;
             }
 
-            .cart-row input{
-                width:90px;
-                padding:6px;
+            .control-group{
+                display:flex;
+                flex-direction:column;
             }
 
-            .label{
+            .control-group label{
+
                 font-size:12px;
+
                 color:#666;
+
                 margin-bottom:4px;
             }
 
-            .subtotal{
+            .control-group input{
+
+                width:90px;
+
+                padding:8px;
+
+                border:1px solid #ccc;
+
+                border-radius:6px;
+            }
+
+            .cart-subtotal{
+
+                margin-top:12px;
+
                 font-weight:bold;
-                margin-bottom:10px;
+
+                font-size:15px;
             }
 
             .remove-btn{
+
+                margin-top:12px;
+
                 background:#ef4444;
+
                 color:white;
 
                 border:none;
@@ -851,27 +897,39 @@ def cart():
                         <div class="cart-card">
 
                             <img
-                                src="${item.image || 'https://via.placeholder.com/90x120?text=No+Image'}"
+                                src="${item.image || 'https://via.placeholder.com/80x110?text=No+Image'}"
                                 class="cart-image"
                             >
 
                             <div class="cart-content">
 
-                                <div class="cart-title">
-                                    ${item.title}
-                                </div>
-
-                                <div class="cart-store">
-                                    ${item.store}
-                                </div>
-
-                                <div class="cart-row">
+                                <div class="cart-top">
 
                                     <div>
 
-                                        <div class="label">
-                                            Price
+                                        <div class="cart-store store-${item.store}">
+                                            ${item.store}
                                         </div>
+
+                                        <div class="cart-title">
+                                            ${item.title}
+                                        </div>
+
+                                    </div>
+
+                                    <div class="cart-price">
+                                        $${price.toFixed(2)}
+                                    </div>
+
+                                </div>
+
+                                <div class="cart-controls">
+
+                                    <div class="control-group">
+
+                                        <label>
+                                            Price
+                                        </label>
 
                                         <input
                                             type="number"
@@ -883,11 +941,11 @@ def cart():
 
                                     </div>
 
-                                    <div>
+                                    <div class="control-group">
 
-                                        <div class="label">
+                                        <label>
                                             Qty
-                                        </div>
+                                        </label>
 
                                         <input
                                             type="number"
@@ -900,7 +958,7 @@ def cart():
 
                                 </div>
 
-                                <div class="subtotal">
+                                <div class="cart-subtotal">
 
                                     Subtotal:
                                     $${subtotal.toFixed(2)}
