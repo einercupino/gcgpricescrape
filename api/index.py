@@ -38,19 +38,21 @@ def home():
             }
 
             .container{
-
+                /*
+                 * Constrain the app to a handset‑friendly width.  On mobile devices
+                 * a very wide container causes elements to spread out and the
+                 * quantity buttons to overflow the card.  Setting a max width
+                 * around 450px keeps everything neatly aligned on phones while
+                 * still centring the card on larger screens.  Use 100% width so
+                 * the container expands to fill the viewport until it hits the
+                 * maximum.
+                 */
                 width:100%;
-
-                max-width:1500px;
-
+                max-width:450px;
                 margin:auto;
-
                 background:white;
-
                 padding:16px;
-
                 border-radius:10px;
-
                 box-shadow:0 0 10px rgba(0,0,0,0.1);
             }
 
@@ -599,19 +601,18 @@ def cart():
                 margin:0;
             }
             .container{
-
+                /*
+                 * Match the search page container sizing.  Keeping a narrow
+                 * maximum width ensures the card controls remain on a single
+                 * line and nothing spills out of view on small screens.  The
+                 * width will grow up to 450px and then centre itself.
+                 */
                 width:100%;
-
-                max-width:1500px;
-
+                max-width:450px;
                 margin:auto;
-
                 background:white;
-
                 padding:16px;
-
                 border-radius:10px;
-
                 box-shadow:0 0 10px rgba(0,0,0,0.1);
             }
             h1{
@@ -650,8 +651,13 @@ def cart():
 
             .cart-image{
 
-                width:70px;
-                height:95px;
+                /* Reduce the image dimensions slightly to free
+                 * horizontal space for the controls without losing
+                 * recognisable card art.  The aspect ratio remains
+                 * consistent.
+                 */
+                width:58px;
+                height:82px;
 
                 object-fit:cover;
 
@@ -670,31 +676,40 @@ def cart():
             }
 
             .cart-title{
-                /* smaller font size for card names to save space */
-                font-size:13px;
-                line-height:1.4;
-                margin-bottom:8px;
+                /* Make the card name smaller and tighten spacing */
+                font-size:12px;
+                line-height:1.3;
+                margin-bottom:6px;
                 word-break:break-word;
             }
 
             .cart-controls{
-                /* Use a grid layout so price, quantity and subtotal align horizontally on the same plane.  Each group gets equal space. */
-                display:grid;
-                grid-template-columns:
-                    110px
-                    90px
-                    auto;
-                gap:18px;
-                margin-bottom:10px;
+                /*
+                 * Align the Price, Subtotal and Quantity controls in a single
+                 * horizontal row using flexbox instead of CSS grid.  This
+                 * approach prevents the quantity buttons from spilling
+                 * outside the card when the viewport is narrow.  Each
+                 * control group takes only as much space as it needs and
+                 * a gap between them provides breathing room.
+                 */
+                display:flex;
                 align-items:center;
+                gap:12px;
+                margin-bottom:10px;
+                flex-wrap:nowrap;
             }
 
             .control-group{
                 display:flex;
                 flex-direction:column;
                 justify-content:flex-start;
-                /* Allow groups to stretch to fill available grid columns */
-                width:100%;
+                /*
+                 * Allow each control group to size itself based on its
+                 * contents.  We omit a fixed width here so that Price,
+                 * Subtotal and Quantity groups can shrink or expand as
+                 * needed without forcing the quantity buttons off the
+                 * edge of the card.
+                 */
             }
 
             .control-group label{
@@ -707,8 +722,13 @@ def cart():
             }
 
             .control-group input{
-                /* Full width input to align with other groups */
-                width:90px;
+                /*
+                 * Limit the width of the price input so the subtotal and
+                 * quantity controls have room.  A narrower input makes
+                 * better use of horizontal space on mobile while still
+                 * allowing two digits before and after the decimal.
+                 */
+                width:82px;
                 padding:6px;
                 border:1px solid #ccc;
                 border-radius:6px;
@@ -721,11 +741,17 @@ def cart():
                 align-items:center;
                 justify-content:center;
                 gap:6px;
-                width:100%;
+                /*
+                 * Give the quantity controls a fixed width so the plus
+                 * button stays within the card boundaries even on
+                 * narrow screens.  A width similar to the price and
+                 * subtotal columns keeps the layout balanced.
+                 */
+                width:82px;
             }
             .qty-btn{
-                width:26px;
-                height:26px;
+                width:24px;
+                height:24px;
                 border:none;
                 border-radius:6px;
                 font-size:16px;
@@ -758,18 +784,19 @@ def cart():
             /* Subtotal group styled similarly to other control groups */
             .subtotal-value{
 
+                /*
+                 * Ensure the subtotal column consumes roughly the same
+                 * horizontal space as the price input.  This fixed width
+                 * prevents the subtotal text from bumping the quantity
+                 * controls to the next line when the card is narrow.
+                 */
                 display:flex;
-
                 align-items:center;
-
                 justify-content:flex-start;
-
                 font-size:15px;
-
                 font-weight:bold;
-
-                min-height:38px;
-
+                width:82px;
+                min-height:34px;
                 padding-left:4px;
             }
 
