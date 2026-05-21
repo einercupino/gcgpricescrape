@@ -33,7 +33,7 @@ def home():
             }
 
             .container{
-                max-width:1100px;
+                max-width:1400px;
                 margin:auto;
                 background:white;
                 padding:25px;
@@ -581,7 +581,7 @@ def cart():
                 padding:20px;
             }
             .container{
-                max-width:1100px;
+                max-width:1400px;
                 margin:auto;
                 background:white;
                 padding:25px;
@@ -603,25 +603,25 @@ def cart():
 
                 display:flex;
 
-                gap:10px;
+                gap:12px;
 
                 background:white;
 
                 border-radius:12px;
 
-                padding:12px;
+                padding:10px 12px;
 
                 border:1px solid #ddd;
 
                 box-shadow:0 2px 6px rgba(0,0,0,0.08);
 
-                align-items:flex-start;
+                align-items:center;
             }
 
             .cart-image{
 
-                width:70px;
-                height:95px;
+                width:60px;
+                height:84px;
 
                 object-fit:cover;
 
@@ -636,19 +636,26 @@ def cart():
             }
 
             .cart-title{
-                /* smaller font size for card names to save space */
-                font-size:13px;
-                line-height:1.4;
-                margin-bottom:8px;
+
+                font-size:12px;
+
+                line-height:1.3;
+
+                margin-bottom:6px;
+
                 word-break:break-word;
             }
 
-            .cart-controls{
-                display:flex;
-                gap:10px;
-                margin-bottom:10px;
-                flex-wrap:wrap;
-            }
+.cart-controls{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:14px;
+
+    flex-wrap:wrap;
+}
 
             .control-group{
                 display:flex;
@@ -657,7 +664,7 @@ def cart():
 
             .control-group label{
 
-                font-size:11px;
+                font-size:10px;
 
                 color:#666;
 
@@ -665,7 +672,7 @@ def cart():
             }
 
             .control-group input{
-                width:80px;
+                width:70px;
                 padding:6px;
                 border:1px solid #ccc;
                 border-radius:6px;
@@ -712,11 +719,11 @@ def cart():
 
             .cart-subtotal{
 
-                font-size:14px;
+                font-size:13px;
 
                 font-weight:bold;
 
-                margin-bottom:10px;
+                white-space:nowrap;
             }
 
             .remove-btn{
@@ -884,10 +891,13 @@ def cart():
                                     ${item.title}
                                 </div>
                                 <div class="cart-controls">
+
                                     <div class="control-group">
+
                                         <label>
                                             Price
                                         </label>
+
                                         <input
                                             type="number"
                                             step="0.01"
@@ -895,21 +905,46 @@ def cart():
                                             value="${price.toFixed(2)}"
                                             onchange="updatePrice(${idx}, this.value)"
                                         />
+
                                     </div>
+
                                     <div class="control-group">
+
                                         <label>
                                             Qty
                                         </label>
+
                                         <div class="qty-controls">
-                                            <button class="qty-btn minus" onclick="decreaseQty(${idx})">-</button>
-                                            <span class="qty-value">${item.cart_qty}</span>
-                                            <button class="qty-btn plus" onclick="increaseQty(${idx})">+</button>
+
+                                            <button
+                                                class="qty-btn minus"
+                                                onclick="decreaseQty(${idx})"
+                                            >
+                                                -
+                                            </button>
+
+                                            <span class="qty-value">
+                                                ${item.cart_qty}
+                                            </span>
+
+                                            <button
+                                                class="qty-btn plus"
+                                                onclick="increaseQty(${idx})"
+                                            >
+                                                +
+                                            </button>
+
                                         </div>
+
                                     </div>
-                                </div>
-                                <div class="cart-subtotal">
-                                    Subtotal:
-                                    $${subtotal.toFixed(2)}
+
+                                    <div class="cart-subtotal">
+
+                                        Subtotal:
+                                        $${subtotal.toFixed(2)}
+
+                                    </div>
+
                                 </div>
                             </div>
                         </div>
