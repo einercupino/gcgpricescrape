@@ -783,6 +783,25 @@ def cart():
                 background:#2563eb;
                 color:white;
             }
+
+            .subtotal-value{
+
+                min-width:80px;
+
+                height:36px;
+
+                display:flex;
+
+                align-items:center;
+
+                font-size:15px;
+
+                font-weight:bold;
+            }
+
+            .control-group{
+                justify-content:flex-start;
+            }
         </style>
     </head>
 
@@ -938,10 +957,17 @@ def cart():
 
                                     </div>
 
-                                    <div class="cart-subtotal">
+                                    <div class="control-group">
 
-                                        Subtotal:
-                                        $${subtotal.toFixed(2)}
+                                        <label>
+                                            Subtotal
+                                        </label>
+
+                                        <div class="subtotal-value">
+
+                                            $${subtotal.toFixed(2)}
+
+                                        </div>
 
                                     </div>
 
