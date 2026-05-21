@@ -235,6 +235,102 @@ def home():
                 border-radius:8px;
             }
 
+            .cart-cards{
+                display:flex;
+                flex-direction:column;
+                gap:14px;
+                margin-top:20px;
+            }
+
+            .cart-card{
+                display:flex;
+                gap:12px;
+
+                background:white;
+
+                border-radius:12px;
+
+                padding:14px;
+
+                border:1px solid #ddd;
+
+                box-shadow:0 2px 6px rgba(0,0,0,0.08);
+            }
+
+            .cart-image{
+                width:90px;
+                height:120px;
+
+                object-fit:cover;
+
+                border-radius:8px;
+
+                flex-shrink:0;
+            }
+
+            .cart-content{
+                flex:1;
+                min-width:0;
+            }
+
+            .cart-title{
+                font-weight:bold;
+                font-size:14px;
+
+                line-height:1.4;
+
+                margin-bottom:6px;
+
+                word-break:break-word;
+            }
+
+            .cart-store{
+                font-size:12px;
+                color:#666;
+                margin-bottom:10px;
+            }
+
+            .cart-row{
+                display:flex;
+                gap:12px;
+                margin-bottom:12px;
+            }
+
+            .cart-row input{
+                width:90px;
+                padding:6px;
+            }
+
+            .label{
+                font-size:12px;
+                color:#666;
+                margin-bottom:4px;
+            }
+
+            .subtotal{
+                font-weight:bold;
+                margin-bottom:10px;
+            }
+
+            .remove-btn{
+                background:#ef4444;
+                color:white;
+
+                border:none;
+
+                padding:8px 12px;
+
+                border-radius:6px;
+
+                cursor:pointer;
+
+                font-size:13px;
+            }
+
+            .remove-btn:hover{
+                background:#dc2626;
+            }
+
         </style>
 
     </head>
@@ -710,37 +806,133 @@ def cart():
             function goBack(){
                 window.location.href = '/';
             }
+            
             function renderCart(){
+
                 const cart = getCart();
-                const tableDiv = document.getElementById('cart-table');
-                const totalDiv = document.getElementById('grand-total');
+
+                const tableDiv =
+                    document.getElementById('cart-table');
+
+                const totalDiv =
+                    document.getElementById('grand-total');
+
                 if(!cart || cart.length === 0){
-                    tableDiv.innerHTML = '<p>Your cart is empty.</p>';
+
+                    tableDiv.innerHTML =
+                        '<p>Your cart is empty.</p>';
+
                     totalDiv.textContent = '';
+
                     return;
                 }
-                let html = '<table><tr><th>Title</th><th>Price (CAD)</th><th>Qty</th><th>Subtotal</th><th></th></tr>';
+
+                let html = `<div class="cart-cards">`;
+
                 let grandTotal = 0;
+
                 cart.forEach((item, idx) => {
-                    // default qty to 1 if not present
-                    if(!item.cart_qty){ item.cart_qty = 1; }
-                    // price field may be string or number; ensure numeric
-                    let price = Number(item.price || 0);
-                    if(isNaN(price)){ price = 0; }
-                    const subtotal = Number(price) * Number(item.cart_qty);
+
+                    if(!item.cart_qty){
+                        item.cart_qty = 1;
+                    }
+
+                    let price =
+                        Number(item.price || 0);
+
+                    const subtotal =
+                        Number(price) *
+                        Number(item.cart_qty);
+
                     grandTotal += subtotal;
-                    html += `<tr>
-                        <td>${item.title}</td>
-                        <td><input type="number" step="0.01" min="0" value="${price.toFixed(2)}" onchange="updatePrice(${idx}, this.value)"></td>
-                        <td><input type="number" min="1" value="${item.cart_qty}" onchange="updateQty(${idx}, this.value)"></td>
-                        <td>$${subtotal.toFixed(2)}</td>
-                        <td><button class="remove-btn" onclick="removeItem(${idx})">Remove</button></td>
-                    </tr>`;
+
+                    html += `
+
+                        <div class="cart-card">
+
+                            <img
+                                src="${item.image || 'https://via.placeholder.com/90x120?text=No+Image'}"
+                                class="cart-image"
+                            >
+
+                            <div class="cart-content">
+
+                                <div class="cart-title">
+                                    ${item.title}
+                                </div>
+
+                                <div class="cart-store">
+                                    ${item.store}
+                                </div>
+
+                                <div class="cart-row">
+
+                                    <div>
+
+                                        <div class="label">
+                                            Price
+                                        </div>
+
+                                        <input
+                                            type="number"
+                                            step="0.01"
+                                            min="0"
+                                            value="${price.toFixed(2)}"
+                                            onchange="updatePrice(${idx}, this.value)"
+                                        >
+
+                                    </div>
+
+                                    <div>
+
+                                        <div class="label">
+                                            Qty
+                                        </div>
+
+                                        <input
+                                            type="number"
+                                            min="1"
+                                            value="${item.cart_qty}"
+                                            onchange="updateQty(${idx}, this.value)"
+                                        >
+
+                                    </div>
+
+                                </div>
+
+                                <div class="subtotal">
+
+                                    Subtotal:
+                                    $${subtotal.toFixed(2)}
+
+                                </div>
+
+                                <button
+                                    class="remove-btn"
+                                    onclick="removeItem(${idx})"
+                                >
+                                    Remove
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    `;
+
                 });
-                html += '</table>';
+
+                html += `</div>`;
+
                 tableDiv.innerHTML = html;
-                totalDiv.textContent = 'Grand Total: $' + grandTotal.toFixed(2);
+
+                totalDiv.innerHTML = `
+                    Grand Total:
+                    $${grandTotal.toFixed(2)}
+                `;
+
             }
+
             function updatePrice(idx, val){
                 const cart = getCart();
                 let price = Number(val);
