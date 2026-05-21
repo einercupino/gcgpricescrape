@@ -857,6 +857,10 @@ def cart():
                 background:#2563eb;
                 color:white;
             }
+            .export-btn{
+            background:#16a34a;
+            color:white;
+}
         </style>
     </head>
 
@@ -867,6 +871,7 @@ def cart():
             <div class="actions">
                 <button class="back-btn" onclick="goBack()">&larr; Back to Search</button>
                 <button class="clear-btn" onclick="clearCart()">Clear Cart</button>
+                <button class="export-btn" onclick="copyCartText()">Copy Text</button>
             </div>
         </div>
         <script>
@@ -890,6 +895,52 @@ def cart():
             function clearCart(){
                 localStorage.removeItem('cart');
                 renderCart();
+            }
+            function copyCartText(){
+
+                const cart = getCart();
+
+                if(!cart || cart.length === 0){
+
+                    alert("Cart is empty");
+
+                    return;
+                }
+
+                let text = "";
+
+                let grandTotal = 0;
+
+                cart.forEach((item, idx) => {
+
+                    const price =
+                        Number(item.price || 0);
+
+                    const qty =
+                        Number(item.cart_qty || 1);
+
+                    const subtotal =
+                        price * qty;
+
+                    grandTotal += subtotal;
+
+                    text +=
+            `${idx + 1}. ${item.title}
+            Price: $${price.toFixed(2)}
+            Qty: ${qty}
+            Subtotal: $${subtotal.toFixed(2)}
+
+            `;
+
+                });
+
+                text +=
+            `Grand Total: $${grandTotal.toFixed(2)}`;
+
+                navigator.clipboard.writeText(text);
+
+                alert("Copied to clipboard");
+
             }
             function goBack(){
                 window.location.href = '/';
