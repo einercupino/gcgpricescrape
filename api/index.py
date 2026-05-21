@@ -695,7 +695,7 @@ def cart():
                 color:white;
             }
             .qty-btn.plus{
-                background:#2563eb;
+                background:#008000;
                 color:white;
             }
             .qty-btn.minus:hover{
@@ -781,7 +781,6 @@ def cart():
 
     <body>
         <div class="container">
-            <h1>Shopping Cart</h1>
             <div id="cart-items" class="cart-cards"></div>
             <div class="total" id="grand-total"></div>
             <div class="actions">
