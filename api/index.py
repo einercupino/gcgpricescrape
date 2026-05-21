@@ -905,18 +905,20 @@ def cart():
                                             onchange="updatePrice(${idx}, this.value)"
                                         />
                                     </div>
+                                    
+                                    <div class="control-group">
+                                        <label>Subtotal</label>
+                                        <div class="subtotal-value">
+                                            $${subtotal.toFixed(2)}
+                                        </div>
+                                    </div>
+
                                     <div class="control-group">
                                         <label>Qty</label>
                                         <div class="qty-controls">
                                             <button class="qty-btn minus" onclick="decreaseQty(${idx})">-</button>
                                             <span class="qty-value">${item.cart_qty}</span>
                                             <button class="qty-btn plus" onclick="increaseQty(${idx})">+</button>
-                                        </div>
-                                    </div>
-                                    <div class="control-group">
-                                        <label>Subtotal</label>
-                                        <div class="subtotal-value">
-                                            $${subtotal.toFixed(2)}
                                         </div>
                                     </div>
                                 </div>
