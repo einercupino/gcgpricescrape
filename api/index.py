@@ -208,6 +208,18 @@ def home():
                 background:#d1d5db;
             }
 
+            .card{
+                display:flex;
+                gap:12px;
+            }
+
+            .card-image{
+                width:90px;
+                height:120px;
+                object-fit:cover;
+                border-radius:8px;
+            }
+
         </style>
 
     </head>
@@ -410,24 +422,33 @@ def home():
 
                             <div class="card">
 
-                                <div class="top-row">
+                                <img
+                                    src="${item.image}"
+                                    class="card-image"
+                                >
 
-                                    <div class="store store-${item.store}">
-                                        ${item.store}
+                                <div class="card-content">
+
+                                    <div class="top-row">
+
+                                        <div class="store store-${item.store}">
+                                            ${item.store}
+                                        </div>
+
+                                        <div class="price">
+                                            $${Number(item.price).toFixed(2)}
+                                        </div>
+
                                     </div>
 
-                                    <div class="price">
-                                        $${Number(item.price).toFixed(2)}
+                                    <div class="title">
+                                        ${item.title}
                                     </div>
 
-                                </div>
+                                    <div class="qty">
+                                        Qty: ${item.quantity ?? "-"}
+                                    </div>
 
-                                <div class="title">
-                                    ${item.title}
-                                </div>
-
-                                <div class="qty">
-                                    Qty: ${item.quantity ?? "-"}
                                 </div>
 
                             </div>

@@ -496,6 +496,7 @@ def fetch_tcg_products(card_code: str) -> List[Dict[str, Optional[str]]]:
             "title": product_name,
             "price": price_cad,
             "quantity": None,
+            "image": image_url
         })
 
     return results
