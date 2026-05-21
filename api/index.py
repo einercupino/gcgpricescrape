@@ -351,14 +351,10 @@ def home():
                     placeholder="Search Gundam Card"
                 />
 
+                
+
                 <button onclick="searchCard()">
                     Search
-                </button>
-
-                <!-- Clear button allows the user to quickly empty the search box and reset the keyboard
-                     to alphanumeric mode.  Positioned next to the search button for convenience. -->
-                <button onclick="clearSearch()" style="background:#6b7280;">
-                    Clear
                 </button>
 
             </div>
@@ -385,37 +381,10 @@ def home():
                     document.getElementById("code");
 
                 input.value = prefix;
-                // When a prefix button is selected we restrict the input to
-                // numeric values only.  This switches the mobile keyboard to
-                // digits and prevents accidental letters.  We set both the
-                // type attribute and inputmode to ensure broad device
-                // compatibility.
-                input.type = 'number';
-                input.setAttribute('inputmode', 'numeric');
 
                 input.focus();
 
-            }
-
-            /**
-             * Clear the search box and reset the keyboard back to text mode.
-             * This removes any prefix or value currently in the box and
-             * deletes the results display.  Called when the user taps the
-             * Clear button on the search page.
-             */
-            function clearSearch(){
-                const input = document.getElementById("code");
-                input.value = '';
-                // Reset the input type and remove the numeric input mode so that
-                // the full alphanumeric keyboard reappears.
-                input.type = 'text';
-                input.removeAttribute('inputmode');
-                // Clear any displayed results and instructive text.
-                const resultsDiv = document.getElementById('results');
-                if(resultsDiv){
-                    resultsDiv.innerHTML = '';
-                }
-            }
+            }        
         
             // cart state persisted in localStorage
             function getCart(){
