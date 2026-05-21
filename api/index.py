@@ -636,23 +636,18 @@ def cart():
             }
 
             .cart-title{
-
-                font-size:14px;
-
+                /* smaller font size for card names to save space */
+                font-size:13px;
                 line-height:1.4;
-
-                margin-bottom:10px;
-
+                margin-bottom:8px;
                 word-break:break-word;
             }
 
             .cart-controls{
-
                 display:flex;
-
                 gap:10px;
-
                 margin-bottom:10px;
+                flex-wrap:wrap;
             }
 
             .control-group{
@@ -670,15 +665,48 @@ def cart():
             }
 
             .control-group input{
-
                 width:80px;
-
                 padding:6px;
-
                 border:1px solid #ccc;
-
                 border-radius:6px;
+                font-size:14px;
+            }
 
+            /* Quantity controls */
+            .qty-controls{
+                display:flex;
+                align-items:center;
+                gap:6px;
+            }
+            .qty-btn{
+                width:26px;
+                height:26px;
+                border:none;
+                border-radius:6px;
+                font-size:16px;
+                font-weight:bold;
+                cursor:pointer;
+                display:flex;
+                align-items:center;
+                justify-content:center;
+            }
+            .qty-btn.minus{
+                background:#ef4444;
+                color:white;
+            }
+            .qty-btn.plus{
+                background:#2563eb;
+                color:white;
+            }
+            .qty-btn.minus:hover{
+                background:#dc2626;
+            }
+            .qty-btn.plus:hover{
+                background:#1d4ed8;
+            }
+            .qty-value{
+                min-width:24px;
+                text-align:center;
                 font-size:14px;
             }
 
@@ -802,6 +830,33 @@ def cart():
                 saveCart(cart);
                 renderCart();
             }
+
+            // Increase the quantity of an item by one
+            function increaseQty(idx){
+                const cart = getCart();
+                if(!cart[idx]) return;
+                let qty = parseInt(cart[idx].cart_qty || 0, 10);
+                if(isNaN(qty) || qty < 0){ qty = 0; }
+                cart[idx].cart_qty = qty + 1;
+                saveCart(cart);
+                renderCart();
+            }
+
+            // Decrease the quantity of an item by one.  If quantity drops below 1, remove the item.
+            function decreaseQty(idx){
+                const cart = getCart();
+                if(!cart[idx]) return;
+                let qty = parseInt(cart[idx].cart_qty || 0, 10);
+                if(isNaN(qty) || qty < 1){ qty = 1; }
+                qty = qty - 1;
+                if(qty < 1){
+                    cart.splice(idx, 1);
+                } else {
+                    cart[idx].cart_qty = qty;
+                }
+                saveCart(cart);
+                renderCart();
+            }
             function renderCart(){
                 const cart = getCart();
                 const itemsDiv = document.getElementById('cart-items');
@@ -820,28 +875,20 @@ def cart():
                     grandTotal += subtotal;
                     
                     html += `
-
                         <div class="cart-card">
-
                             <img
                                 src="${item.image || 'https://via.placeholder.com/80x110?text=No+Image'}"
                                 class="cart-image"
                             />
-
                             <div class="cart-content">
-
                                 <div class="cart-title">
                                     ${item.title}
                                 </div>
-
                                 <div class="cart-controls">
-
                                     <div class="control-group">
-
                                         <label>
                                             Price
                                         </label>
-
                                         <input
                                             type="number"
                                             step="0.01"
@@ -849,44 +896,24 @@ def cart():
                                             value="${price.toFixed(2)}"
                                             onchange="updatePrice(${idx}, this.value)"
                                         />
-
                                     </div>
-
                                     <div class="control-group">
-
                                         <label>
                                             Qty
                                         </label>
-
-                                        <input
-                                            type="number"
-                                            min="1"
-                                            value="${item.cart_qty}"
-                                            onchange="updateQty(${idx}, this.value)"
-                                        />
-
+                                        <div class="qty-controls">
+                                            <button class="qty-btn minus" onclick="decreaseQty(${idx})">-</button>
+                                            <span class="qty-value">${item.cart_qty}</span>
+                                            <button class="qty-btn plus" onclick="increaseQty(${idx})">+</button>
+                                        </div>
                                     </div>
-
                                 </div>
-
                                 <div class="cart-subtotal">
-
                                     Subtotal:
                                     $${subtotal.toFixed(2)}
-
                                 </div>
-
-                                <button
-                                    class="remove-btn"
-                                    onclick="removeItem(${idx})"
-                                >
-                                    Remove
-                                </button>
-
                             </div>
-
                         </div>
-
                     `;
 
                 });
