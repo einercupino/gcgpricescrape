@@ -423,7 +423,7 @@ def home():
                             <div class="card">
 
                                 <img
-                                    src="${item.image}"
+                                    src="${item.image || 'https://via.placeholder.com/90x120?text=No+Image'}"
                                     class="card-image"
                                 >
 

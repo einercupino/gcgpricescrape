@@ -263,11 +263,19 @@ def fetch_401_products(card_code: str) -> List[Dict[str, Optional[str]]]:
             except (TypeError, ValueError):
                 continue
             quantity = variant.get("inventory_quantity")
+            # Extract the product image (use the first image if available)
+            image_url = None
+            images = product.get("images")
+            if images:
+                first_image = images[0]
+                if isinstance(first_image, dict):
+                    image_url = first_image.get("src")
             out.append({
                 "store": STORE_ABBREV["401 Games"],
                 "title": title,
                 "price": price,
                 "quantity": quantity,
+                "image": image_url,
             })
         return out
 
@@ -317,11 +325,19 @@ def fetch_banana_products(card_code: str) -> List[Dict[str, Optional[str]]]:
                 price = float(price_str)
             except (TypeError, ValueError):
                 continue
+            # Extract the first image for Banana Games
+            image_url = None
+            images = product.get("images")
+            if images:
+                first_image = images[0]
+                if isinstance(first_image, dict):
+                    image_url = first_image.get("src")
             out.append({
                 "store": STORE_ABBREV["Banana Games"],
                 "title": title,
                 "price": price,
                 "quantity": None,
+                "image": image_url,
             })
         return out
 
@@ -371,11 +387,19 @@ def fetch_hobbiesville_products(card_code: str) -> List[Dict[str, Optional[str]]
                 price = float(price_str)
             except (TypeError, ValueError):
                 continue
+            # Extract the first image for Hobbiesville
+            image_url = None
+            images = product.get("images")
+            if images:
+                first_image = images[0]
+                if isinstance(first_image, dict):
+                    image_url = first_image.get("src")
             out.append({
                 "store": STORE_ABBREV["Hobbiesville"],
                 "title": title,
                 "price": price,
                 "quantity": None,
+                "image": image_url,
             })
         return out
 
@@ -491,12 +515,13 @@ def fetch_tcg_products(card_code: str) -> List[Dict[str, Optional[str]]]:
         price_cad = price_usd * usd_to_cad if usd_to_cad else price_usd
         # Round to two decimal places for currency
         price_cad = round(price_cad, 2)
+        # TCGplayer does not provide images in TCGCSV; set image to None
         results.append({
             "store": STORE_ABBREV["TCGplayer"],
             "title": product_name,
             "price": price_cad,
             "quantity": None,
-            "image": image_url
+            "image": None,
         })
 
     return results
