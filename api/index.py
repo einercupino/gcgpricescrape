@@ -132,26 +132,11 @@ def home():
             }
 
             .card{
-                display:flex;
-                gap:12px;
                 background:white;
                 border-radius:12px;
                 padding:14px;
                 border:1px solid #ddd;
                 box-shadow:0 2px 6px rgba(0,0,0,0.08);
-
-                cursor:pointer;
-
-                transition:0.2s;
-            }
-
-            .card:hover{
-                transform:scale(1.01);
-                box-shadow:0 4px 12px rgba(0,0,0,0.12);
-            }
-
-            .card-image{
-                pointer-events:none;
             }
 
             .top-row{
@@ -233,148 +218,6 @@ def home():
                 height:120px;
                 object-fit:cover;
                 border-radius:8px;
-            }
-
-            .cart-cards{
-                display:flex;
-                flex-direction:column;
-                gap:14px;
-                margin-top:20px;
-            }
-
-            .cart-card{
-
-                display:flex;
-                gap:12px;
-
-                background:white;
-
-                border-radius:12px;
-
-                padding:14px;
-
-                border:1px solid #ddd;
-
-                box-shadow:0 2px 6px rgba(0,0,0,0.08);
-
-                align-items:flex-start;
-            }
-
-            .cart-image{
-
-                width:80px;
-                height:110px;
-
-                object-fit:cover;
-
-                border-radius:8px;
-
-                flex-shrink:0;
-            }
-
-            .cart-content{
-                flex:1;
-                min-width:0;
-            }
-
-            .cart-top{
-                display:flex;
-                justify-content:space-between;
-                align-items:flex-start;
-                gap:10px;
-            }
-
-            .cart-store{
-                font-size:14px;
-                font-weight:bold;
-            }
-
-            .cart-title{
-
-                margin-top:6px;
-
-                font-size:15px;
-
-                line-height:1.4;
-
-                word-break:break-word;
-            }
-
-            .cart-price{
-
-                font-size:18px;
-
-                font-weight:bold;
-
-                white-space:nowrap;
-            }
-
-            .cart-controls{
-
-                display:flex;
-
-                gap:14px;
-
-                margin-top:14px;
-
-                flex-wrap:wrap;
-            }
-
-            .control-group{
-                display:flex;
-                flex-direction:column;
-            }
-
-            .control-group label{
-
-                font-size:12px;
-
-                color:#666;
-
-                margin-bottom:4px;
-            }
-
-            .control-group input{
-
-                width:90px;
-
-                padding:8px;
-
-                border:1px solid #ccc;
-
-                border-radius:6px;
-            }
-
-            .cart-subtotal{
-
-                margin-top:12px;
-
-                font-weight:bold;
-
-                font-size:15px;
-            }
-
-            .remove-btn{
-
-                margin-top:12px;
-
-                background:#ef4444;
-
-                color:white;
-
-                border:none;
-
-                padding:8px 12px;
-
-                border-radius:6px;
-
-                cursor:pointer;
-
-                font-size:13px;
-            }
-
-            .remove-btn:hover{
-                background:#dc2626;
             }
 
         </style>
@@ -531,9 +374,9 @@ def home():
 
                 input.focus();
 
-            }
-
-            // Cart helper functions stored globally
+            }        
+        
+            // cart state persisted in localStorage
             function getCart(){
                 try{
                     const c = localStorage.getItem('cart');
@@ -556,6 +399,7 @@ def home():
             }
 
             function addToCartByIndex(index){
+                // Add an item from the current results array into the cart without redirecting.
                 if(!window.currentResults || !Array.isArray(window.currentResults)) return;
                 const item = window.currentResults[index];
                 if(!item) return;
@@ -563,49 +407,34 @@ def home():
                 cart.push({
                     store: item.store,
                     title: item.title,
-                    image: item.image,
+                    price: item.price,
                     quantity: item.quantity,
-                    price: Number(item.price),
-                    cart_qty: 1,
+                    image: item.image,
+                    cart_qty: 1
                 });
                 saveCart(cart);
                 updateCartCount();
-                showAddedToast();
-            }
-
-            // Initialize cart count on page load
-            updateCartCount();
-
-            function showAddedToast(){
-
-                const toast =
-                    document.createElement("div");
-
-                toast.innerText = "Added to cart";
-
-                toast.style.position = "fixed";
-                toast.style.bottom = "20px";
-                toast.style.left = "50%";
-                toast.style.transform = "translateX(-50%)";
-
-                toast.style.background = "#111";
-                toast.style.color = "white";
-
-                toast.style.padding = "10px 16px";
-
-                toast.style.borderRadius = "8px";
-
-                toast.style.zIndex = "9999";
-
-                toast.style.fontSize = "14px";
-
+                // show a brief confirmation toast instead of alert
+                const toast = document.createElement('div');
+                toast.innerText = 'Added to cart';
+                toast.style.position = 'fixed';
+                toast.style.bottom = '20px';
+                toast.style.left = '50%';
+                toast.style.transform = 'translateX(-50%)';
+                toast.style.background = '#111';
+                toast.style.color = 'white';
+                toast.style.padding = '10px 16px';
+                toast.style.borderRadius = '8px';
+                toast.style.zIndex = '9999';
+                toast.style.fontSize = '14px';
                 document.body.appendChild(toast);
-
                 setTimeout(() => {
                     toast.remove();
                 }, 1200);
-
             }
+
+            // initialize cart count on page load
+            updateCartCount();
 
             async function searchCard(){
 
@@ -625,17 +454,12 @@ def home():
                     return;
                 }
 
+
                 resultsDiv.innerHTML = `
                     <div class="loading">
                         Searching prices...
                     </div>
                 `;
-            // Start loading spinner
-            resultsDiv.innerHTML = `
-                <div class="loading">
-                    Searching prices...
-                </div>
-            `;
 
                 try{
 
@@ -741,6 +565,13 @@ def data(code: str):
 # Cart page displaying selected items stored in localStorage.
 @app.get("/cart", response_class=HTMLResponse)
 def cart():
+    """
+    Render the shopping cart page.  This version uses card-style containers
+    instead of a table to improve mobile usability.  Each item in the cart
+    is displayed as a card with the product image, store abbreviation,
+    title, editable price and quantity, and subtotal.  The grand total
+    updates automatically when the price or quantity is changed.
+    """
     return """
     <!DOCTYPE html>
     <html>
@@ -765,33 +596,115 @@ def cart():
             h1{
                 margin-bottom:20px;
             }
-            table{
-                width:100%;
-                border-collapse:collapse;
+
+            /* Card layout for cart items */
+            .cart-cards{
+                display:flex;
+                flex-direction:column;
+                gap:14px;
                 margin-top:20px;
-                display:block;
-                overflow-x:auto;
             }
-            th, td{
+            .cart-card{
+                display:flex;
+                gap:12px;
+                background:white;
+                border-radius:12px;
+                padding:14px;
                 border:1px solid #ddd;
-                padding:10px;
-                text-align:left;
+                box-shadow:0 2px 6px rgba(0,0,0,0.08);
+                align-items:flex-start;
+            }
+            .cart-image{
+                width:80px;
+                height:110px;
+                object-fit:cover;
+                border-radius:8px;
+                flex-shrink:0;
+            }
+            .cart-content{
+                flex:1;
+                min-width:0;
+            }
+            .cart-top{
+                display:flex;
+                justify-content:space-between;
+                align-items:flex-start;
+                gap:10px;
+            }
+            .cart-store{
+                font-size:14px;
+                font-weight:bold;
+            }
+            .cart-title{
+                margin-top:6px;
+                font-size:15px;
+                line-height:1.4;
+                word-break:break-word;
+            }
+            .cart-price{
+                font-size:18px;
+                font-weight:bold;
                 white-space:nowrap;
             }
-            th{
-                background:#f3f4f6;
+            .cart-controls{
+                display:flex;
+                gap:14px;
+                margin-top:14px;
+                flex-wrap:wrap;
             }
-            input[type="number"]{
-                width:80px;
-                padding:4px;
+            .control-group{
+                display:flex;
+                flex-direction:column;
+            }
+            .control-group label{
+                font-size:12px;
+                color:#666;
+                margin-bottom:4px;
+            }
+            .control-group input{
+                width:90px;
+                padding:8px;
+                border:1px solid #ccc;
+                border-radius:6px;
+            }
+            .cart-subtotal{
+                margin-top:12px;
+                font-weight:bold;
+                font-size:15px;
+            }
+            .remove-btn{
+                margin-top:12px;
+                background:#ef4444;
+                color:white;
+                border:none;
+                padding:8px 12px;
+                border-radius:6px;
+                cursor:pointer;
+                font-size:13px;
+            }
+            .remove-btn:hover{
+                background:#dc2626;
+            }
+            /* Colour coding for store labels within the cart */
+            .store-401G{
+                color:#2563eb;
+            }
+            .store-BANG{
+                color:#16a34a;
+            }
+            .store-HOBB{
+                color:#ea580c;
+            }
+            .store-TCGP{
+                color:#9333ea;
             }
             .total{
                 font-size:18px;
                 font-weight:bold;
-                margin-top:15px;
+                margin-top:20px;
             }
             .actions{
-                margin-top:10px;
+                margin-top:15px;
             }
             .actions button{
                 margin-right:10px;
@@ -801,10 +714,6 @@ def cart():
                 border:none;
                 border-radius:6px;
                 font-weight:bold;
-            }
-            .remove-btn{
-                background:#ef4444;
-                color:white;
             }
             .clear-btn{
                 background:#f97316;
@@ -820,7 +729,7 @@ def cart():
     <body>
         <div class="container">
             <h1>Shopping Cart</h1>
-            <div id="cart-table"></div>
+            <div id="cart-items" class="cart-cards"></div>
             <div class="total" id="grand-total"></div>
             <div class="actions">
                 <button class="back-btn" onclick="goBack()">&larr; Back to Search</button>
@@ -852,145 +761,6 @@ def cart():
             function goBack(){
                 window.location.href = '/';
             }
-            
-            function renderCart(){
-
-                const cart = getCart();
-
-                const tableDiv =
-                    document.getElementById('cart-table');
-
-                const totalDiv =
-                    document.getElementById('grand-total');
-
-                if(!cart || cart.length === 0){
-
-                    tableDiv.innerHTML =
-                        '<p>Your cart is empty.</p>';
-
-                    totalDiv.textContent = '';
-
-                    return;
-                }
-
-                let html = `<div class="cart-cards">`;
-
-                let grandTotal = 0;
-
-                cart.forEach((item, idx) => {
-
-                    if(!item.cart_qty){
-                        item.cart_qty = 1;
-                    }
-
-                    let price =
-                        Number(item.price || 0);
-
-                    const subtotal =
-                        Number(price) *
-                        Number(item.cart_qty);
-
-                    grandTotal += subtotal;
-
-                    html += `
-
-                        <div class="cart-card">
-
-                            <img
-                                src="${item.image || 'https://via.placeholder.com/80x110?text=No+Image'}"
-                                class="cart-image"
-                            >
-
-                            <div class="cart-content">
-
-                                <div class="cart-top">
-
-                                    <div>
-
-                                        <div class="cart-store store-${item.store}">
-                                            ${item.store}
-                                        </div>
-
-                                        <div class="cart-title">
-                                            ${item.title}
-                                        </div>
-
-                                    </div>
-
-                                    <div class="cart-price">
-                                        $${price.toFixed(2)}
-                                    </div>
-
-                                </div>
-
-                                <div class="cart-controls">
-
-                                    <div class="control-group">
-
-                                        <label>
-                                            Price
-                                        </label>
-
-                                        <input
-                                            type="number"
-                                            step="0.01"
-                                            min="0"
-                                            value="${price.toFixed(2)}"
-                                            onchange="updatePrice(${idx}, this.value)"
-                                        >
-
-                                    </div>
-
-                                    <div class="control-group">
-
-                                        <label>
-                                            Qty
-                                        </label>
-
-                                        <input
-                                            type="number"
-                                            min="1"
-                                            value="${item.cart_qty}"
-                                            onchange="updateQty(${idx}, this.value)"
-                                        >
-
-                                    </div>
-
-                                </div>
-
-                                <div class="cart-subtotal">
-
-                                    Subtotal:
-                                    $${subtotal.toFixed(2)}
-
-                                </div>
-
-                                <button
-                                    class="remove-btn"
-                                    onclick="removeItem(${idx})"
-                                >
-                                    Remove
-                                </button>
-
-                            </div>
-
-                        </div>
-
-                    `;
-
-                });
-
-                html += `</div>`;
-
-                tableDiv.innerHTML = html;
-
-                totalDiv.innerHTML = `
-                    Grand Total:
-                    $${grandTotal.toFixed(2)}
-                `;
-
-            }
-
             function updatePrice(idx, val){
                 const cart = getCart();
                 let price = Number(val);
@@ -1003,11 +773,56 @@ def cart():
                 const cart = getCart();
                 let qty = parseInt(val, 10);
                 if(isNaN(qty) || qty < 1){ qty = 1; }
-                cart[idx].cart_qty =Number(qty);
+                cart[idx].cart_qty = qty;
                 saveCart(cart);
                 renderCart();
             }
-            // initial render
+            function renderCart(){
+                const cart = getCart();
+                const itemsDiv = document.getElementById('cart-items');
+                const totalDiv = document.getElementById('grand-total');
+                if(!cart || cart.length === 0){
+                    itemsDiv.innerHTML = '<p>Your cart is empty.</p>';
+                    totalDiv.textContent = '';
+                    return;
+                }
+                let html = '';
+                let grandTotal = 0;
+                cart.forEach((item, idx) => {
+                    if(!item.cart_qty){ item.cart_qty = 1; }
+                    let price = Number(item.price || 0);
+                    const subtotal = Number(price) * Number(item.cart_qty);
+                    grandTotal += subtotal;
+                    html += `
+                        <div class="cart-card">
+                            <img src="${item.image || 'https://via.placeholder.com/80x110?text=No+Image'}" class="cart-image" />
+                            <div class="cart-content">
+                                <div class="cart-top">
+                                    <div>
+                                        <div class="cart-store store-${item.store}">${item.store}</div>
+                                        <div class="cart-title">${item.title}</div>
+                                    </div>
+                                    <div class="cart-price">$${price.toFixed(2)}</div>
+                                </div>
+                                <div class="cart-controls">
+                                    <div class="control-group">
+                                        <label>Price</label>
+                                        <input type="number" step="0.01" min="0" value="${price.toFixed(2)}" onchange="updatePrice(${idx}, this.value)" />
+                                    </div>
+                                    <div class="control-group">
+                                        <label>Qty</label>
+                                        <input type="number" min="1" value="${item.cart_qty}" onchange="updateQty(${idx}, this.value)" />
+                                    </div>
+                                </div>
+                                <div class="cart-subtotal">Subtotal: $${subtotal.toFixed(2)}</div>
+                                <button class="remove-btn" onclick="removeItem(${idx})">Remove</button>
+                            </div>
+                        </div>
+                    `;
+                });
+                itemsDiv.innerHTML = html;
+                totalDiv.textContent = 'Grand Total: $' + grandTotal.toFixed(2);
+            }
             renderCart();
         </script>
     </body>
