@@ -925,17 +925,13 @@ def cart():
                     grandTotal += subtotal;
 
                     text +=
-            `${idx + 1}. ${item.title}
-            Price: $${price.toFixed(2)}
-            Qty: ${qty}
-            Subtotal: $${subtotal.toFixed(2)}
-
-            `;
+                    `${idx + 1}. ${item.title} - $${price.toFixed(2)} x ${qty} = $${subtotal.toFixed(2)}
+                    `;
 
                 });
 
                 text +=
-            `Grand Total: $${grandTotal.toFixed(2)}`;
+                `\nGrand Total: $${grandTotal.toFixed(2)}`;
 
                 navigator.clipboard.writeText(text);
 
