@@ -132,13 +132,13 @@ def home():
 
         <div class="container">
 
-            <h1>🃏 Gundam Card Price Checker</h1>
+            <h1>Gundam Card Game Price Check</h1>
 
             <div class="search-row">
 
                 <input
                     id="code"
-                    placeholder="Enter Gundam Card Code (e.g. GD04-041)"
+                    placeholder="Search Gundam Card"
                 />
 
                 <button onclick="searchCard()">
